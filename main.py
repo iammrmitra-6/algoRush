@@ -2,6 +2,7 @@ import os
 import uuid
 from datetime import datetime
 from enum import Enum
+from pathlib import Path
 from typing import Dict, List, Optional
 
 from dotenv import load_dotenv
@@ -13,7 +14,8 @@ from google import genai
 from google.genai import types
 from pydantic import BaseModel
 
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(BASE_DIR / ".env")
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 if not API_KEY:
@@ -25,8 +27,8 @@ client = genai.Client(api_key=API_KEY)
 MODEL_NAME = "gemini-3.6-flash"
 
 app = FastAPI(title="ArogyaResQ AI")
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
 DISCLAIMER = (
     "ArogyaResQ AI gives you structured, workplace‑aware first‑aid guidance — DOs, DON’Ts, and red flags — "
